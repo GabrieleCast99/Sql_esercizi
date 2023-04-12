@@ -1,0 +1,93 @@
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > CREATE USER 'developer'@'localhost' IDENTIFIED BY 'Gabri123!';
+ERROR: Not connected.
+
+ MySQL  SQL > \connect
+\connect [--mx|--mysqlx|--mc|--mysql] [--ssh <sshuri>] <URI>
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 23 (X protocol)
+Server version: 8.0.32 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  SQL > CREATE USER 'developer'@'localhost' IDENTIFIED BY 'Gabri123!';
+Query OK, 0 rows affected (0.0049 sec)
+ MySQL  localhost:33060+ ssl  SQL > CREATE USER 'viewer'@'localhost' IDENTIFIED BY 'Gabri123!';
+Query OK, 0 rows affected (0.0049 sec)
+ MySQL  localhost:33060+ ssl  SQL > CREATE USER 'writer'@'localhost' IDENTIFIED BY 'Gabri123!';
+Query OK, 0 rows affected (0.0034 sec)
+ MySQL  localhost:33060+ ssl  SQL > SELECT user FROM mysql.user;
++------------------+
+| user             |
++------------------+
+| Gabri            |
+| developer        |
+| mysql.infoschema |
+| mysql.session    |
+| mysql.sys        |
+| root             |
+| viewer           |
+| writer           |
++------------------+
+8 rows in set (0.0004 sec)
+ MySQL  localhost:33060+ ssl  SQL > CREATE ROLE 'app_developer';
+Query OK, 0 rows affected (0.0023 sec)
+ MySQL  localhost:33060+ ssl  SQL > CREATE ROLE 'app_read';
+Query OK, 0 rows affected (0.0021 sec)
+ MySQL  localhost:33060+ ssl  SQL > CREATE ROLE 'app_write';
+Query OK, 0 rows affected (0.0027 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT ALL ON *.* TO 'app_developer';
+Query OK, 0 rows affected (0.0026 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT SELECT ON *.* TO 'app_read';
+Query OK, 0 rows affected (0.0021 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT INSERT, UPDATE, DELETE ON *.* TO 'app_write';
+Query OK, 0 rows affected (0.0020 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT 'app_developer' TO 'developer'@'localhost';
+Query OK, 0 rows affected (0.0020 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT 'app_read' TO 'viewer'@'localhost';
+Query OK, 0 rows affected (0.0027 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT 'app_write' TO 'writer'@'localhost';
+Query OK, 0 rows affected (0.0019 sec)
+ MySQL  localhost:33060+ ssl  SQL > SELECT CURRENT_ROLE();
++----------------+
+| CURRENT_ROLE() |
++----------------+
+| NONE           |
++----------------+
+1 row in set (0.0004 sec)
+ MySQL  localhost:33060+ ssl  SQL > SELECT USER();
++----------------+
+| USER()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.0003 sec)
+ 
+ MySQL  localhost:33060+ ssl  SQL > CREATE DATABASE IF NOT EXISTS newdb;
+Query OK, 1 row affected (0.0024 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT ALL PRIVILEGES ON newdb.* TO 'developer'@'localhost';
+Query OK, 0 rows affected (0.0020 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT SELECT ON newdb.* TO 'viewer'@'localhost';
+Query OK, 0 rows affected (0.0019 sec)
+ MySQL  localhost:33060+ ssl  SQL > GRANT INSERT, UPDATE, DELETE ON newdb.* TO 'writer'@'localhost';
+Query OK, 0 rows affected (0.0021 sec)
+ MySQL  localhost:33060+ ssl  SQL > SELECT user FROM mysql.user;
++------------------+
+| user             |
++------------------+
+| Gabri            |
+| app_developer    |
+| app_read         |
+| app_write        |
+| developer        |
+| mysql.infoschema |
+| mysql.session    |
+| mysql.sys        |
+| root             |
+| viewer           |
+| writer           |
++------------------+
+11 rows in set (0.0004 sec)
+ MySQL  localhost:33060+ ssl  SQL >
